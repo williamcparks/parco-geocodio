@@ -10,7 +10,7 @@ This library is intentionally minimal and focuses on:
 
 ## Constructing A Client
 
-```rust
+```rust,ignore
 use geocodio::GeocodioClient;
 
 let http_client = reqwest::Client::new();
@@ -23,7 +23,7 @@ let geocodio = GeocodioClient::builder()
 
 ## Geocoding An Address
 
-```rust
+```rust,ignore
 let result = geocodio
     .geocode()
     .address("1600 Pennsylvania Ave NW, Washington, DC")
