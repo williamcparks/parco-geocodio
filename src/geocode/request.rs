@@ -13,11 +13,6 @@ pub struct AddressRequest<'a, 'b, 'c, 'd> {
     q: &'c str,
     country: Option<&'d str>,
     limit: u64,
-    format: Option<Format>,
-}
-
-pub enum Format {
-    Simple,
 }
 
 impl<'a, 'b, 'c, 'd> AddressRequest<'a, 'b, 'c, 'd> {
@@ -28,7 +23,6 @@ impl<'a, 'b, 'c, 'd> AddressRequest<'a, 'b, 'c, 'd> {
         q: &'c str,
         country: Option<&'d str>,
         limit: u64,
-        format: Option<Format>,
     ) -> Self {
         Self {
             client,
@@ -38,7 +32,6 @@ impl<'a, 'b, 'c, 'd> AddressRequest<'a, 'b, 'c, 'd> {
             q,
             country,
             limit,
-            format,
         }
     }
 
@@ -56,11 +49,6 @@ impl<'a, 'b, 'c, 'd> AddressRequest<'a, 'b, 'c, 'd> {
         let req = match self.limit {
             limit @ 1.. => req.query(&[("limit", limit)]),
             0 => req,
-        };
-
-        let req = match self.format {
-            Some(Format::Simple) => req.query(&[("format", "simple")]),
-            None => req,
         };
 
         let src = req.send().await?.text().await?;

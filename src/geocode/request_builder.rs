@@ -1,7 +1,10 @@
 use std::borrow::Cow;
 
-use super::request::{AddressRequest, Format};
+use super::request::AddressRequest;
 
+/// Builder for creating a geocode request.
+///
+/// Returned from [`crate::GeocodioClient`](GeocodioClient).
 pub struct GeocodeRequestBuilder<'a, 'b> {
     client: reqwest::Client,
     api_key: &'a str,
@@ -17,6 +20,7 @@ impl<'a, 'b> GeocodeRequestBuilder<'a, 'b> {
         }
     }
 
+    /// Sets the address to be geocoded.
     pub fn address<'c, 'd>(
         self,
         address: &'c str,
@@ -28,11 +32,11 @@ impl<'a, 'b> GeocodeRequestBuilder<'a, 'b> {
             address,
             country: None,
             limit: 0,
-            format: None,
         }
     }
 }
 
+/// Builder for a geocode request with an address set.
 pub struct GeocodeRequestBuilderWithAddress<'a, 'b, 'c, 'd> {
     client: reqwest::Client,
     api_key: &'a str,
@@ -40,10 +44,10 @@ pub struct GeocodeRequestBuilderWithAddress<'a, 'b, 'c, 'd> {
     address: &'c str,
     country: Option<&'d str>,
     limit: u64,
-    format: Option<Format>,
 }
 
 impl<'a, 'b, 'c, 'd> GeocodeRequestBuilderWithAddress<'a, 'b, 'c, 'd> {
+    /// Restricts results to a specific country.
     pub fn country(self, country: &'d str) -> Self {
         Self {
             country: Some(country),
@@ -51,17 +55,12 @@ impl<'a, 'b, 'c, 'd> GeocodeRequestBuilderWithAddress<'a, 'b, 'c, 'd> {
         }
     }
 
+    /// Limits the number of results returned.
     pub fn limit(self, limit: u64) -> Self {
         Self { limit, ..self }
     }
 
-    pub fn format(self, format: Format) -> Self {
-        Self {
-            format: Some(format),
-            ..self
-        }
-    }
-
+    /// Finalizes the request and returns an executable geocode request.
     pub fn build(self) -> AddressRequest<'a, 'b, 'c, 'd> {
         AddressRequest::new(
             self.client,
@@ -70,7 +69,6 @@ impl<'a, 'b, 'c, 'd> GeocodeRequestBuilderWithAddress<'a, 'b, 'c, 'd> {
             self.address,
             self.country,
             self.limit,
-            self.format,
         )
     }
 }

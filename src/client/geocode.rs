@@ -3,6 +3,7 @@ use std::borrow::Cow;
 use crate::{GeocodioClient, geocode::request_builder::GeocodeRequestBuilder};
 
 impl<'a, 'b> GeocodioClient<'a, 'b> {
+    /// Construct a geocode request
     pub fn geocode(&self) -> GeocodeRequestBuilder<'a, 'b> {
         use super::urls::{DEFAULT_BASE_URL, DEFAULT_GEOCODE_URL, build_url};
 

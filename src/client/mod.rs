@@ -1,3 +1,6 @@
+/// A reusable client for interacting with the Geocodio API.
+///
+/// Created via the [`GeocodioClient::builder`] Method
 #[derive(Clone, Debug)]
 pub struct GeocodioClient<'a, 'b> {
     client: reqwest::Client,
