@@ -1,6 +1,6 @@
 use thiserror::Error;
 
-use crate::AccuracyType;
+use crate::{AccuracyType, ApiError};
 
 /// Errors that can occur while performing a geocoding request.
 #[derive(Debug, Error)]
@@ -11,6 +11,14 @@ pub enum GeocodeError {
         #[from]
         #[source]
         reqwest::Error,
+    ),
+
+    /// An Api Error From Geocodio
+    #[error("Geocodio: {0}")]
+    Api(
+        #[from]
+        #[source]
+        ApiError,
     ),
 
     /// Failed to parse the JSON response.

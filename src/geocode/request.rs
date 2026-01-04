@@ -53,6 +53,10 @@ impl<'a, 'b, 'c, 'd> AddressRequest<'a, 'b, 'c, 'd> {
 
         let src = req.send().await?.text().await?;
 
+        if let Ok(api_error) = serde_json::from_str(src.as_str()) {
+            return Err(GeocodeError::Api(api_error));
+        }
+
         let response: GeocodeResponse = match serde_json::from_str(src.as_str()) {
             Ok(ok) => ok,
             Err(err) => return Err(GeocodeError::Json(err, src)),

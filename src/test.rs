@@ -1,4 +1,6 @@
-use crate::GeocodioClient;
+use std::time::Duration;
+
+use crate::{GeocodeError, GeocodioClient};
 
 #[tokio::test]
 async fn test() {
@@ -33,5 +35,24 @@ async fn test() {
         .try_accurate()
         .unwrap();
 
-    println!("{:#?}", geocoded);
+    dbg!(geocoded);
+
+    tokio::time::sleep(Duration::from_millis(1000)).await;
+
+    let geocoded = geocodio_client
+        .geocode()
+        .address("invalid")
+        .country("USA")
+        .limit(1)
+        .build()
+        .send()
+        .await;
+
+    match geocoded {
+        Ok(ok) => panic!("Geocode Expected To Fail With Api Error: {ok:#?}"),
+        Err(GeocodeError::Api(api_err)) => {
+            println!("Got Correct Api Error: {api_err}");
+        }
+        Err(err) => panic!("Geocode Failed For Wrong Reason Expected Api Error Got: {err}"),
+    }
 }
