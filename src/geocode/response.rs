@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use serde::Deserialize;
 
 use crate::GeocodeError;
@@ -15,7 +13,7 @@ pub struct GeocodeResponse {
 #[derive(Clone, Debug, Deserialize)]
 pub struct Geocoded {
     /// Parsed address components keyed by component name.
-    pub address_components: HashMap<Box<str>, Box<str>>,
+    pub address_components: serde_json::Value,
 
     /// Individual address lines returned by Geocodio.
     pub address_lines: Vec<Box<str>>,
