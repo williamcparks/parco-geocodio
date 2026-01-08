@@ -6,7 +6,7 @@ use crate::GeocodeError;
 #[derive(Clone, Debug, Deserialize)]
 pub struct GeocodeResponse {
     /// List of geocoded results.
-    pub results: Vec<Geocoded>,
+    pub results: Box<[Geocoded]>,
 }
 
 /// A single geocoded address result.
@@ -16,7 +16,7 @@ pub struct Geocoded {
     pub address_components: serde_json::Value,
 
     /// Individual address lines returned by Geocodio.
-    pub address_lines: Vec<Box<str>>,
+    pub address_lines: Box<[Box<str>]>,
 
     /// Fully formatted address.
     pub formatted_address: Box<str>,
